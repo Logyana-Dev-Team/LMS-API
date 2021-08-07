@@ -46,12 +46,10 @@ app.use(cors());
 app.use((req, res, next) => {
   const allowedOrigins = [
     "https://true-lessons.herokuapp.com/",
-    "http://localhost:3001",
+    "http://localhost:3001/",
   ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-with, Control-Type, Accept, Authorization"
