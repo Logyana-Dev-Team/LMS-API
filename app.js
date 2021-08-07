@@ -42,7 +42,7 @@ app.use(compression());
 
 // enable cors
 app.use(cors());
-app.options("*", cors());
+// app.options("*", cors());
 app.use((req, res, next) => {
   const allowedOrigins = [
     "https://true-lessons.herokuapp.com/",
