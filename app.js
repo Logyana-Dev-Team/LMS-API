@@ -43,21 +43,12 @@ app.use(compression());
 // enable cors
 app.use(cors());
 // app.options("*", cors());
-app.use((req, res, next) => {
-  const allowedOrigins = [
-    "https://true-lessons.herokuapp.com/",
-    "http://localhost:3001/",
-  ];
-  res.setHeader("Access-Control-Allow-Origin", "*");
-
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-with, Control-Type, Accept, Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept"
   );
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
   next();
 });
 
