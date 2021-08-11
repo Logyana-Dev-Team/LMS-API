@@ -15,6 +15,9 @@ router.get("/:id", ChapterController.findChapterById);
 //Get a Lead by id
 router.get("/getChapter/:id", ChapterController.findChapterByCourseId);
 
+//Get a Lead by id
+router.get("/getChapterByModule/:id", ChapterController.findChapterByModuleId);
+
 //Update a Lead by id
 router.patch("/", ChapterController.updateAChapter);
 

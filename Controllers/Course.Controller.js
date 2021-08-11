@@ -51,11 +51,12 @@ module.exports = {
 
   updateACourse: async (req, res, next) => {
     try {
-      const id = req.body._id;
       const updates = req.body;
-      const options = { new: true };
 
-      const result = await Course.findByIdAndUpdate(id, updates, options);
+      const result = await Course.updateOne(
+        { _id: req.body._id },
+        { $set: updates }
+      );
       if (!result) {
         throw createError(404, "Course does not exist");
       }

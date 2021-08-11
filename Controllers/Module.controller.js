@@ -20,13 +20,21 @@ module.exports = {
       name: req.body.name,
       course: req.body.course,
       imageName: req.body.imageName,
+      price: req.body.price,
+      videoName: req.body.videoName,
+      description: req.body.description,
     };
     const module = new Module(moduleObj);
     module.save((error, module) => {
-      if (error) return res.status(400).json({ error });
+      if (error) console.log(error.message);
+      if (error) {
+        return next(createError(400, error.message));
+      }
+
       if (module) {
         return res.status(201).json({ module });
       }
+      next(error);
     });
   },
 
@@ -74,6 +82,7 @@ module.exports = {
   updateAModule: async (req, res, next) => {
     try {
       const id = req.body._id;
+      logger.info(id);
       const updates = req.body;
       const options = { new: true };
 

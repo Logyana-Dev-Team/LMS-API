@@ -14,8 +14,8 @@ router
     userController.createUser
   )
   .get(
-    auth("getUsers"),
-    validate(userValidation.getUsers),
+    // auth("getUsers"),
+    // validate(userValidation.getUsers),
     userController.getUsers
   );
 
@@ -36,5 +36,7 @@ router
     validate(userValidation.deleteUser),
     userController.deleteUser
   );
+
+router.post("/enroll", userController.enrollModule);
 
 module.exports = router;

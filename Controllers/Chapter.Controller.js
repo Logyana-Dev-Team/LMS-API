@@ -22,11 +22,7 @@ module.exports = {
       chapterName: req.body.chapterName,
       description: req.body.description,
       videoName: req.body.videoName,
-      question: req.body.question,
-      option1: req.body.option1,
-      option2: req.body.option2,
-      option3: req.body.option3,
-      option4: req.body.option4,
+      quiz: req.body.quiz,
     };
 
     const chapter = new Chapter(chapterObj);
@@ -42,7 +38,7 @@ module.exports = {
     const id = req.params.id;
     try {
       const chapter = await Chapter.findById(id).populate(
-        "course",
+        "course module",
         "_id name imageName"
       );
 
@@ -64,6 +60,26 @@ module.exports = {
     const id = req.params.id;
     try {
       const chapter = await Chapter.find({ course: id });
+
+      if (!chapter) {
+        throw createError(404, "Chapter does not exist.");
+      }
+      res.send(chapter);
+    } catch (error) {
+      console.log(error.message);
+      if (error instanceof mongoose.CastError) {
+        next(createError(400, "Invalid Chapter id"));
+        return;
+      }
+      next(error);
+    }
+  },
+
+  findChapterByModuleId: async (req, res, next) => {
+    const id = req.params.id;
+    try {
+      const chapter = await Chapter.find({ module: id });
+      logger.info(chapter);
 
       if (!chapter) {
         throw createError(404, "Chapter does not exist.");

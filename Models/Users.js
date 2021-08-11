@@ -4,6 +4,13 @@ const { toJSON, paginate } = require("./Plugins");
 const { roles } = require("../Config/roles");
 const Schema = mongoose.Schema;
 
+const Module = new Schema({
+  module: {
+    type: Schema.Types.ObjectId,
+    ref: "module",
+  },
+});
+
 const UserSchema = new Schema({
   email: {
     type: String,
@@ -38,9 +45,10 @@ const UserSchema = new Schema({
   name: {
     type: String,
   },
-  // mobile: {
-  //   type: String,
-  // },
+  mobile: {
+    type: String,
+  },
+  module: [Module],
 });
 
 // add plugin that converts mongoose to json

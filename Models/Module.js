@@ -9,9 +9,19 @@ const ModuleScheme = new Schema({
   course: {
     type: Schema.Types.ObjectId,
     ref: "course",
-    require: true,
   },
   imageName: {
+    type: String,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+  videoName: {
+    type: String,
+    required: true,
+  },
+  description: {
     type: String,
     required: true,
   },

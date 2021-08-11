@@ -5,6 +5,7 @@ const ApiError = require("../Utils/ApiError");
 const catchAsync = require("../Utils/catchAsync");
 const { userService } = require("../Services");
 const logger = require("../Config/logger");
+const User = require("../Models/Users");
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -12,19 +13,42 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["name", "role"]);
-  const options = pick(req.query, ["sortBy", "limit", "page"]);
-  const result = await userService.queryUsers(filter, options);
+  const result = await userService.queryUsers();
   logger.info(result);
   res.send(result);
 });
 
-const getUser = catchAsync(async (req, res) => {
+const getUser = async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   res.send(user);
+};
+
+const enrollModule = catchAsync(async (req, res) => {
+  try {
+    const id = req.body.userId;
+    const updates = { $push: { module: req.body.module } };
+
+    logger.info(req.body);
+
+    const result = await User.updateOne(
+      { _id: req.body.userId },
+      { $push: { module: { module: req.body.module } } }
+    );
+    if (!result) {
+      throw createError(404, "Module does not exist");
+    }
+    res.send(result);
+  } catch (error) {
+    console.log(error.message);
+    if (error instanceof mongoose.CastError) {
+      return next(createError(400, "Invalid Module Id"));
+    }
+
+    next(error);
+  }
 });
 
 const updateUser = catchAsync(async (req, res) => {
@@ -43,4 +67,5 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  enrollModule,
 };
